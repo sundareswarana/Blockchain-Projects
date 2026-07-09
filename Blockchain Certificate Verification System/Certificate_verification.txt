@@ -1,0 +1,44 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract CertificateVerification {
+
+    struct Certificate {
+        string studentName;
+        string courseName;
+        bool isValid;
+    }
+
+    mapping(string => Certificate) public certificates;
+
+    function issueCertificate(
+        string memory _certificateId,
+        string memory _studentName,
+        string memory _courseName
+    ) public {
+
+        certificates[_certificateId] = Certificate(
+            _studentName,
+            _courseName,
+            true
+        );
+    }
+
+    function verifyCertificate(string memory _certificateId)
+        public
+        view
+        returns(
+            string memory,
+            string memory,
+            bool
+        )
+    {
+        Certificate memory cert = certificates[_certificateId];
+
+        return (
+            cert.studentName,
+            cert.courseName,
+            cert.isValid
+        );
+    }
+}
