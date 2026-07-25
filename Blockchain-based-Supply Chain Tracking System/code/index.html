@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supply Chain Tracking DApp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Blockchain Supply Chain Tracking</h1>
+
+<label>Product ID</label>
+<input type="text" id="productId">
+
+<label>Product Name</label>
+<input type="text" id="productName">
+
+<label>Manufacturer</label>
+<input type="text" id="manufacturer">
+
+<label>Location</label>
+<input type="text" id="location">
+
+<label>Status</label>
+<select id="status">
+    <option>Manufactured</option>
+    <option>In Transit</option>
+    <option>Warehouse</option>
+    <option>Delivered</option>
+</select>
+
+<br><br>
+
+<button onclick="registerProduct()">
+Register Product
+</button>
+
+<button onclick="getProduct()">
+Search Product
+</button>
+
+<br><br>
+
+<h2>Result</h2>
+
+<p id="output">
+No product searched.
+</p>
+</div>
+<script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+<script src="contract.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
