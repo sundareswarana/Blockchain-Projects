@@ -2,17 +2,19 @@ Build the complete Blockchain based supply chain tracking system.
 
 The following flow has been built and demonstrated.
 
+Designed a Solidity smart contract
 
-1. HTML Form
+Deployed it using Remix IDE
 
-2.JavaScript
-     
-3.Ethers.js 
+Connected MetaMask to Ganache
 
-4.MetaMask
+Connected the frontend using Ethers.js
 
-5.Ganache Blockchain
+Stored product details on the blockchain
 
-6.Solidity Smart Contract
+Retrieved product details from the blockchain
 
+Created a functional HTML/CSS/JavaScript frontend
+
+Completed the first full Web3 DApp
 
