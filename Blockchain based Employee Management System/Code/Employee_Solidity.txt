@@ -1,0 +1,84 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract EmployeeManagement {
+
+    struct Employee{
+
+        string employeeName;
+        string designation;
+        string salary;
+        string location;
+        string photo;
+        bool exists;
+
+    }
+
+    mapping(string => Employee) public employees;
+
+    function registerEmployee(
+
+        string memory _employeeId,
+        string memory _employeeName,
+        string memory _designation,
+        string memory _salary,
+        string memory _location,
+        string memory _photo
+
+    ) public{
+
+        require(
+            !employees[_employeeId].exists,
+            "Employee already exists"
+        );
+
+        employees[_employeeId]=Employee(
+
+            _employeeName,
+            _designation,
+            _salary,
+            _location,
+            _photo,
+            true
+
+        );
+
+    }
+
+    function getEmployee(
+
+        string memory _employeeId
+
+    )
+
+    public
+
+    view
+
+    returns(
+
+        string memory,
+        string memory,
+        string memory,
+        string memory,
+        string memory
+
+    )
+
+    {
+
+        Employee memory e=employees[_employeeId];
+
+        return(
+
+            e.employeeName,
+            e.designation,
+            e.salary,
+            e.location,
+            e.photo
+
+        );
+
+    }
+
+}
