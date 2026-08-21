@@ -1,0 +1,57 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract PropertyRegistration {
+
+    struct Property {
+        string ownerName;
+        string propertyType;
+        string location;
+        string marketValue;
+        bool exists;
+    }
+
+    mapping(string => Property) public properties;
+
+    function registerProperty(
+        string memory _propertyId,
+        string memory _ownerName,
+        string memory _propertyType,
+        string memory _location,
+        string memory _marketValue
+    ) public {
+
+        require(!properties[_propertyId].exists,
+                "Property already exists");
+
+        properties[_propertyId] = Property(
+            _ownerName,
+            _propertyType,
+            _location,
+            _marketValue,
+            true
+        );
+    }
+
+    function getProperty(
+        string memory _propertyId
+    )
+        public
+        view
+        returns(
+            string memory,
+            string memory,
+            string memory,
+            string memory
+        )
+    {
+        Property memory p = properties[_propertyId];
+
+        return (
+            p.ownerName,
+            p.propertyType,
+            p.location,
+            p.marketValue
+        );
+    }
+}
