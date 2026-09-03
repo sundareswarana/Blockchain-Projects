@@ -1,0 +1,58 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+contract Bank {
+
+    struct Account {
+        string customerName;
+        string accountType;
+        string branchName;
+        string balanceAmount;
+        bool exists;
+    }
+
+    mapping(string => Account) public accounts;
+
+    function registerAccount(
+        string memory _accountNumber,
+        string memory _customerName,
+        string memory _accountType,
+        string memory _branchName,
+        string memory _balanceAmount
+    ) public {
+
+        require(!accounts[_accountNumber].exists,
+                "Account already exists");
+
+        accounts[_accountNumber] = Account(
+            _customerName,
+            _accountType,
+            _branchName,
+            _balanceAmount,
+            true
+        );
+    }
+
+    function getAccount(
+        string memory _accountNumber
+    )
+        public
+        view
+        returns(
+            string memory,
+            string memory,
+            string memory,
+            string memory
+        )
+    {
+        Account memory a = accounts[_accountNumber];
+
+        return (
+            a.customerName,
+            a.accountType,
+            a.branchName,
+            a.balanceAmount
+        );
+    }
+}
+  							

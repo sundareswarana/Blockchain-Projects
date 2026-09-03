@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bank Customer Management DApp</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Bank Customer Management DApp</h1>
+
+        <button id="connectButton">
+            Connect MetaMask
+        </button>
+
+        <p id="walletStatus">
+            Wallet not connected
+        </p>
+
+        <hr>
+
+        <h2>Register Account</h2>
+
+        <form id="customerForm">
+
+            <label>Account Number</label>
+            <input
+                type="text"
+                id="accountNumber"
+                required
+            >
+
+            <label>Customer Name</label>
+            <input
+                type="text"
+                id="customerName"
+                required
+            >
+
+            <label>Account Type</label>
+            <input
+                type="text"
+                id="accountType"
+                required
+            >
+
+            <label>Branch</label>
+            <input
+                type="text"
+                id="branchName"
+                required
+            >
+
+            <label>Balance</label>
+            <input
+                type="text"
+                id="balanceAmount"
+                required
+            >
+
+           
+            <button type="submit">
+                Register Account
+            </button>
+
+        </form>
+
+        
+        <hr>
+
+        <h2>Search Account</h2>
+
+        <input
+            type="text"
+            id="searchAccountNumber"
+            placeholder="Enter Account Number"
+        >
+
+        <button id="getAccountButton">
+            Get Account
+        </button>
+
+        <div id="accountResult"></div>
+
+    </div>
+
+
+    <!-- Ethers.js v6 -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+
+    <!-- Smart Contract configuration -->
+    <script src="contract.js"></script>
+
+    <!-- Application logic -->
+    <script src="app.js"></script>
+
+</body>
+
+</html>
