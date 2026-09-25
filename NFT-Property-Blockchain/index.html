@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Property NFT Demo</title>
+
+    <!-- ethers.js -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            max-width: 750px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .box {
+            border: 1px solid #cccccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin: 6px 0;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            background: #eeeeee;
+        }
+
+        #received {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border: 3px solid green;
+            background: #eaffea;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<h1>🏠 Property NFT Demonstration</h1>
+
+
+<!-- ================================================= -->
+<!-- CONNECT METAMASK -->
+<!-- ================================================= -->
+
+<div class="box">
+
+    <h2>1. Connect MetaMask</h2>
+
+    <button onclick="connectWallet()">
+        Connect MetaMask
+    </button>
+
+    <p>
+        Connected Wallet:
+    </p>
+
+    <p id="wallet">
+        Not connected
+    </p>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- REGISTER PROPERTY -->
+<!-- ================================================= -->
+
+<div class="box">
+
+    <h2>2. Register Property</h2>
+
+    <input
+        id="propertyId"
+        type="number"
+        placeholder="Property ID"
+    >
+
+    <input
+        id="propertyName"
+        type="text"
+        placeholder="Property Name"
+    >
+
+    <input
+        id="location"
+        type="text"
+        placeholder="Location"
+    >
+
+    <button onclick="registerProperty()">
+        Register Property
+    </button>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- DISPLAY PROPERTY -->
+<!-- ================================================= -->
+
+<div class="box">
+
+    <h2>3. Display Property</h2>
+
+    <input
+        id="displayTokenId"
+        type="number"
+        value="1"
+        placeholder="NFT Token ID"
+    >
+
+    <button onclick="displayProperty()">
+        Display Property
+    </button>
+
+    <div id="propertyDetails"></div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- TRANSFER -->
+<!-- ================================================= -->
+
+<div class="box">
+
+    <h2>4. Transfer Property</h2>
+
+    <input
+        id="recipient"
+        type="text"
+        placeholder="Friend's MetaMask address"
+    >
+
+    <input
+        id="transferTokenId"
+        type="number"
+        value="1"
+        placeholder="NFT Token ID"
+    >
+
+    <button onclick="transferProperty()">
+        Transfer Property
+    </button>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- PROPERTY RECEIVED -->
+<!-- ================================================= -->
+
+<div id="received">
+
+    <h2>🎉 PROPERTY RECEIVED!</h2>
+
+    <p>
+        This wallet is now the owner of the NFT.
+    </p>
+
+    <p>
+        Property ID:
+        <strong id="receivedPropertyId"></strong>
+    </p>
+
+    <p>
+        Property:
+        <strong id="receivedPropertyName"></strong>
+    </p>
+
+    <p>
+        Location:
+        <strong id="receivedLocation"></strong>
+    </p>
+
+    <p>
+        NFT Token ID:
+        <strong id="receivedTokenId"></strong>
+    </p>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- STATUS -->
+<!-- ================================================= -->
+
+<div id="status">
+
+    Status: Not connected
+
+</div>
+
+
+<script>
+
+
+// =====================================================
+// 1. PUT YOUR CONTRACT ADDRESS HERE
+// =====================================================
+
+const CONTRACT_ADDRESS =
+    "0xCE5BE805281704e0e70816E795d007F7Ed575039";
+
+
+// =====================================================
+// 2. CONTRACT ABI
+// =====================================================
+
+const ABI = [
+
+    "function registerProperty(uint256,string,string) public",
+
+    "function getProperty(uint256) public view returns (uint256,string,string)",
+
+    "function ownerOf(uint256) public view returns (address)",
+
+    "function safeTransferFrom(address,address,uint256) public",
+
+    "event Transfer(address indexed from,address indexed to,uint256 indexed tokenId)"
+
+];
+
+
+// =====================================================
+// VARIABLES
+// =====================================================
+
+let provider;
+
+let signer;
+
+let contract;
+
+let currentAccount;
+
+
+// =====================================================
+// 3. CONNECT METAMASK
+// =====================================================
+
+async function connectWallet() {
+
+    try {
+
+        if (!window.ethereum) {
+
+            alert("MetaMask is not installed.");
+
+            return;
+        }
+
+
+        provider =
+            new ethers.BrowserProvider(
+                window.ethereum
+            );
+
+
+        const accounts =
+            await window.ethereum.request({
+
+                method: "eth_requestAccounts"
+
+            });
+
+
+        currentAccount =
+            accounts[0];
+
+
+        signer =
+            await provider.getSigner();
+
+
+        contract =
+            new ethers.Contract(
+
+                CONTRACT_ADDRESS,
+
+                ABI,
+
+                signer
+
+            );
+
+
+        document.getElementById(
+            "wallet"
+        ).innerText =
+            currentAccount;
+
+
+        setStatus(
+            "MetaMask connected."
+        );
+
+
+        // Start listening for NFT transfers
+        startTransferListener();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        setStatus(
+            "Connection error: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// 4. REGISTER PROPERTY
+// =====================================================
+
+async function registerProperty() {
+
+    try {
+
+        if (!contract) {
+
+            alert(
+                "Connect MetaMask first."
+            );
+
+            return;
+        }
+
+
+        const propertyId =
+            document.getElementById(
+                "propertyId"
+            ).value;
+
+
+        const propertyName =
+            document.getElementById(
+                "propertyName"
+            ).value;
+
+
+        const location =
+            document.getElementById(
+                "location"
+            ).value;
+
+
+        if (
+            propertyId === "" ||
+            propertyName === "" ||
+            location === ""
+        ) {
+
+            alert(
+                "Please enter all property details."
+            );
+
+            return;
+        }
+
+
+        setStatus(
+            "Waiting for MetaMask..."
+        );
+
+
+        const tx =
+            await contract.registerProperty(
+
+                propertyId,
+
+                propertyName,
+
+                location
+
+            );
+
+
+        setStatus(
+            "Transaction submitted. Waiting for Sepolia..."
+        );
+
+
+        await tx.wait();
+
+
+        setStatus(
+            "✅ Property registered successfully."
+        );
+
+
+        // The first property receives NFT #1
+        displayPropertyByToken(1);
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        setStatus(
+            "Registration failed: " +
+            getError(error)
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// 5. DISPLAY PROPERTY
+// =====================================================
+
+async function displayProperty() {
+
+    const tokenId =
+        document.getElementById(
+            "displayTokenId"
+        ).value;
+
+
+    displayPropertyByToken(tokenId);
+
+}
+
+
+async function displayPropertyByToken(tokenId) {
+
+    try {
+
+        if (!contract) {
+
+            return;
+        }
+
+
+        const property =
+            await contract.getProperty(
+                tokenId
+            );
+
+
+        const owner =
+            await contract.ownerOf(
+                tokenId
+            );
+
+
+        document.getElementById(
+            "propertyDetails"
+        ).innerHTML = `
+
+            <hr>
+
+            <h3>🏠 Property Details</h3>
+
+            <p>
+                Property ID:
+                <strong>${property[0]}</strong>
+            </p>
+
+            <p>
+                Property Name:
+                <strong>${property[1]}</strong>
+            </p>
+
+            <p>
+                Location:
+                <strong>${property[2]}</strong>
+            </p>
+
+            <p>
+                NFT Token ID:
+                <strong>${tokenId}</strong>
+            </p>
+
+            <p>
+                Current Owner:
+                <strong>${owner}</strong>
+            </p>
+
+        `;
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "propertyDetails"
+        ).innerHTML =
+            "Property not found.";
+
+    }
+
+}
+
+
+// =====================================================
+// 6. TRANSFER PROPERTY
+// =====================================================
+
+async function transferProperty() {
+
+    try {
+
+        if (!contract) {
+
+            alert(
+                "Connect MetaMask first."
+            );
+
+            return;
+        }
+
+
+        const recipient =
+            document.getElementById(
+                "recipient"
+            ).value;
+
+
+        const tokenId =
+            document.getElementById(
+                "transferTokenId"
+            ).value;
+
+
+        if (recipient === "") {
+
+            alert(
+                "Enter the friend's wallet address."
+            );
+
+            return;
+        }
+
+
+        // Check current owner
+
+        const owner =
+            await contract.ownerOf(
+                tokenId
+            );
+
+
+        if (
+            owner.toLowerCase() !==
+            currentAccount.toLowerCase()
+        ) {
+
+            alert(
+                "You are not the current owner."
+            );
+
+            return;
+        }
+
+
+        setStatus(
+            "Waiting for MetaMask confirmation..."
+        );
+
+
+        const tx =
+            await contract.safeTransferFrom(
+
+                currentAccount,
+
+                recipient,
+
+                tokenId
+
+            );
+
+
+        setStatus(
+            "Transfer submitted. Waiting for confirmation..."
+        );
+
+
+        await tx.wait();
+
+
+        setStatus(
+            "✅ Property transferred successfully!"
+        );
+
+
+        displayPropertyByToken(
+            tokenId
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        setStatus(
+            "Transfer failed: " +
+            getError(error)
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// 7. LISTEN FOR ERC-721 TRANSFER EVENT
+// =====================================================
+
+function startTransferListener() {
+
+    if (!contract) {
+
+        return;
+    }
+
+
+    console.log(
+        "Listening for NFT transfers..."
+    );
+
+
+    contract.on(
+
+        "Transfer",
+
+        async function(
+            from,
+            to,
+            tokenId
+        ) {
+
+
+            console.log(
+                "Transfer detected"
+            );
+
+
+            console.log(
+                "From:",
+                from
+            );
+
+
+            console.log(
+                "To:",
+                to
+            );
+
+
+            console.log(
+                "Token ID:",
+                tokenId.toString()
+            );
+
+
+            // Check whether THIS wallet
+            // received the NFT
+
+            if (
+
+                to.toLowerCase() ===
+
+                currentAccount.toLowerCase()
+
+            ) {
+
+                await showPropertyReceived(
+                    tokenId
+                );
+
+            }
+
+        }
+
+    );
+
+}
+
+
+// =====================================================
+// 8. SHOW "PROPERTY RECEIVED"
+// =====================================================
+
+async function showPropertyReceived(
+    tokenId
+) {
+
+    try {
+
+        const property =
+            await contract.getProperty(
+                tokenId
+            );
+
+
+        document.getElementById(
+            "received"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "receivedPropertyId"
+        ).innerText =
+            property[0];
+
+
+        document.getElementById(
+            "receivedPropertyName"
+        ).innerText =
+            property[1];
+
+
+        document.getElementById(
+            "receivedLocation"
+        ).innerText =
+            property[2];
+
+
+        document.getElementById(
+            "receivedTokenId"
+        ).innerText =
+            tokenId;
+
+
+        setStatus(
+            "🎉 Property NFT received!"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+
+// =====================================================
+// 9. STATUS
+// =====================================================
+
+function setStatus(message) {
+
+    document.getElementById(
+        "status"
+    ).innerText =
+        "Status: " + message;
+
+}
+
+
+// =====================================================
+// 10. ERROR HANDLING
+// =====================================================
+
+function getError(error) {
+
+    if (error.shortMessage) {
+
+        return error.shortMessage;
+
+    }
+
+
+    if (error.reason) {
+
+        return error.reason;
+
+    }
+
+
+    return "Transaction failed.";
+
+}
+
+
+// =====================================================
+// 11. META MASK ACCOUNT CHANGE
+// =====================================================
+
+if (window.ethereum) {
+
+    window.ethereum.on(
+        "accountsChanged",
+        function(accounts) {
+
+            if (accounts.length > 0) {
+
+                currentAccount =
+                    accounts[0];
+
+
+                document.getElementById(
+                    "wallet"
+                ).innerText =
+                    currentAccount;
+
+
+                setStatus(
+                    "MetaMask account changed."
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+</script>
+
+</body>
+
+</html>

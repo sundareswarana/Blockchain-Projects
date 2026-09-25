@@ -1,0 +1,56 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+contract PropertyNFT is ERC721 {
+
+    uint256 public nextTokenId = 1;
+
+    struct Property {
+        uint256 propertyId;
+        string propertyName;
+        string location;
+    }
+
+    mapping(uint256 => Property) public properties;
+
+    constructor() ERC721("PropertyNFT", "PROP") {}
+
+    function registerProperty(
+        uint256 _propertyId,
+        string memory _propertyName,
+        string memory _location
+    ) public {
+
+        uint256 tokenId = nextTokenId;
+
+        _safeMint(msg.sender, tokenId);
+
+        properties[tokenId] = Property(
+            _propertyId,
+            _propertyName,
+            _location
+        );
+
+        nextTokenId++;
+    }
+
+    function getProperty(uint256 _tokenId)
+        public
+        view
+        returns (
+            uint256,
+            string memory,
+            string memory
+        )
+    {
+        Property memory p = properties[_tokenId];
+
+        return (
+            p.propertyId,
+            p.propertyName,
+            p.location
+        );
+    }
+}
