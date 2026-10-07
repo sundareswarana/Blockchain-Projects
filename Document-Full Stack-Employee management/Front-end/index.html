@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Employee Management DApp</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
+
+    <h1>Employee Management DApp</h1>
+
+    <p class="subtitle">
+        Blockchain-Based Employee Registration System
+    </p>
+
+
+    <!-- ==========================================
+         METAMASK
+    =========================================== -->
+
+    <div class="wallet-section">
+
+        <button
+            id="connectButton"
+            class="connect-btn"
+        >
+            Connect MetaMask
+        </button>
+
+        <p id="walletStatus">
+            Wallet not connected
+        </p>
+
+    </div>
+
+
+    <hr>
+
+
+    <!-- ==========================================
+         REGISTER EMPLOYEE
+    =========================================== -->
+
+    <h2>Register Employee</h2>
+
+
+    <form id="employeeForm">
+
+
+        <!-- Employee ID -->
+
+        <div class="form-field">
+
+            <label for="employeeId">
+                Employee ID
+            </label>
+
+            <input
+                type="text"
+                id="employeeId"
+                placeholder="EMP001"
+                required
+            >
+
+        </div>
+
+
+        <!-- Employee Name -->
+
+        <div class="form-field">
+
+            <label for="employeeName">
+                Employee Name
+            </label>
+
+            <input
+                type="text"
+                id="employeeName"
+                placeholder="Sundareswaran"
+                required
+            >
+
+        </div>
+
+
+        <!-- Designation -->
+
+        <div class="form-field">
+
+            <label for="designation">
+                Designation
+            </label>
+
+            <input
+                type="text"
+                id="designation"
+                placeholder="Associate Professor"
+                required
+            >
+
+        </div>
+
+
+        <!-- Salary -->
+
+        <div class="form-field">
+
+            <label for="salary">
+                Salary
+            </label>
+
+            <input
+                type="text"
+                id="salary"
+                placeholder="8.5 LPA"
+                required
+            >
+
+        </div>
+
+
+        <!-- Location -->
+
+        <div class="form-field">
+
+            <label for="location">
+                Location
+            </label>
+
+            <input
+                type="text"
+                id="location"
+                placeholder="Chennai"
+                required
+            >
+
+        </div>
+
+
+        <!-- Employee Photo -->
+
+        <div class="form-field">
+
+            <label for="photo">
+                Employee Photo
+            </label>
+
+            <input
+                type="file"
+                id="photo"
+                accept="image/*"
+                required
+            >
+
+            <small>
+                Select JPG, PNG or WEBP image
+            </small>
+
+        </div>
+
+
+        <!-- Employee CV -->
+
+        <div class="form-field">
+
+            <label for="document">
+                Employee CV / Resume
+            </label>
+
+            <input
+                type="file"
+                id="document"
+                accept=".pdf,application/pdf"
+                required
+            >
+
+            <small>
+                Select PDF document only
+            </small>
+
+        </div>
+
+
+        <!-- Register Button -->
+
+        <div class="button-field">
+
+            <button
+                type="submit"
+                class="register-btn"
+            >
+                Register Employee
+            </button>
+
+        </div>
+
+
+    </form>
+
+
+    <!-- Status -->
+
+    <p id="status"></p>
+
+
+    <hr>
+
+
+    <!-- ==========================================
+         SEARCH EMPLOYEE
+    =========================================== -->
+
+    <h2>Search Employee</h2>
+
+
+    <div class="search-section">
+
+
+        <div class="form-field">
+
+            <label for="searchEmployeeId">
+                Employee ID
+            </label>
+
+            <input
+                type="text"
+                id="searchEmployeeId"
+                placeholder="Enter Employee ID"
+            >
+
+        </div>
+
+
+        <div class="button-field">
+
+            <button
+                id="getEmployeeButton"
+                class="search-btn"
+            >
+                Get Employee
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- Employee Result -->
+
+    <div id="employeeResult"></div>
+
+
+</div>
+
+
+<!-- ==========================================
+     ETHERS.JS
+=========================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+
+
+<!-- ==========================================
+     SMART CONTRACT CONFIGURATION
+=========================================== -->
+
+<script src="contract.js"></script>
+
+
+<!-- ==========================================
+     APPLICATION LOGIC
+=========================================== -->
+
+<script src="app.js"></script>
+
+
+</body>
+
+</html>

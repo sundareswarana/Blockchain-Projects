@@ -1,0 +1,417 @@
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+
+    margin: 0;
+
+    padding: 40px 20px;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f4f7fb;
+
+    color: #222;
+
+}
+
+
+.container {
+
+    width: 100%;
+
+    max-width: 700px;
+
+    margin: auto;
+
+    background: white;
+
+    padding: 35px;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.10);
+
+}
+
+
+h1 {
+
+    text-align: center;
+
+    margin-bottom: 8px;
+
+}
+
+
+.subtitle {
+
+    text-align: center;
+
+    color: #666;
+
+    margin-bottom: 30px;
+
+}
+
+
+/* ==========================================
+   HEADINGS
+========================================== */
+
+h2 {
+
+    margin-top: 25px;
+
+    margin-bottom: 25px;
+
+    border-bottom: 2px solid #eee;
+
+    padding-bottom: 10px;
+
+}
+
+
+/* ==========================================
+   FORM FIELDS
+========================================== */
+
+.form-field {
+
+    margin-bottom: 22px;
+
+}
+
+
+.form-field label {
+
+    display: block;
+
+    font-weight: bold;
+
+    margin-bottom: 8px;
+
+}
+
+
+.form-field input {
+
+    display: block;
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 6px;
+
+    font-size: 15px;
+
+    background: #fff;
+
+}
+
+
+.form-field input:focus {
+
+    outline: none;
+
+    border-color: #4a73e8;
+
+    box-shadow:
+        0 0 0 2px rgba(74, 115, 232, 0.12);
+
+}
+
+
+/* ==========================================
+   FILE INPUT
+========================================== */
+
+.form-field input[type="file"] {
+
+    padding: 10px;
+
+    background: #f8f9fc;
+
+    cursor: pointer;
+
+}
+
+
+.form-field small {
+
+    display: block;
+
+    margin-top: 6px;
+
+    color: #777;
+
+    font-size: 12px;
+
+}
+
+
+/* ==========================================
+   BUTTON AREA
+========================================== */
+
+.button-field {
+
+    margin-top: 25px;
+
+    margin-bottom: 10px;
+
+}
+
+
+/* ==========================================
+   CONNECT BUTTON
+========================================== */
+
+.connect-btn {
+
+    display: block;
+
+    margin: auto;
+
+    padding: 12px 25px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #444;
+
+    color: white;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+}
+
+
+.connect-btn:hover {
+
+    background: #222;
+
+}
+
+
+/* ==========================================
+   REGISTER BUTTON
+========================================== */
+
+.register-btn {
+
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #2878e3;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+.register-btn:hover {
+
+    background: #185fc0;
+
+}
+
+
+/* ==========================================
+   SEARCH BUTTON
+========================================== */
+
+.search-btn {
+
+    width: 100%;
+
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #198754;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+}
+
+
+.search-btn:hover {
+
+    background: #146c43;
+
+}
+
+
+/* ==========================================
+   WALLET STATUS
+========================================== */
+
+#walletStatus {
+
+    text-align: center;
+
+    margin-top: 12px;
+
+    color: #666;
+
+    word-break: break-all;
+
+}
+
+
+/* ==========================================
+   STATUS
+========================================== */
+
+#status {
+
+    margin-top: 20px;
+
+    padding: 12px;
+
+    border-radius: 6px;
+
+    background: #f1f3f5;
+
+    word-break: break-word;
+
+}
+
+
+/* ==========================================
+   EMPLOYEE RESULT
+========================================== */
+
+#employeeResult {
+
+    margin-top: 25px;
+
+    padding: 20px;
+
+    border-radius: 8px;
+
+    background: #f8f9fa;
+
+    line-height: 1.7;
+
+}
+
+
+#employeeResult img {
+
+    display: block;
+
+    max-width: 250px;
+
+    max-height: 300px;
+
+    margin: 15px auto;
+
+    border-radius: 8px;
+
+    border: 1px solid #ddd;
+
+}
+
+
+/* ==========================================
+   LINKS
+========================================== */
+
+#employeeResult a {
+
+    display: inline-block;
+
+    margin-top: 8px;
+
+    color: #2878e3;
+
+    font-weight: bold;
+
+    text-decoration: none;
+
+}
+
+
+#employeeResult a:hover {
+
+    text-decoration: underline;
+
+}
+
+
+/* ==========================================
+   HORIZONTAL LINE
+========================================== */
+
+hr {
+
+    border: none;
+
+    border-top: 1px solid #ddd;
+
+    margin: 30px 0;
+
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    body {
+
+        padding: 15px;
+
+    }
+
+
+    .container {
+
+        padding: 22px;
+
+    }
+
+
+    h1 {
+
+        font-size: 24px;
+
+    }
+
+}
